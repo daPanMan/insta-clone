@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>insta485</title>
+        <!-- Link to CSS -->
+        <link rel="stylesheet" href="/static/css/awdeorio_style.css">
+    </head>
+    <body>
+        <div class="heading">
+            <a title="/" href="/" class="logo">
+                <img src="/static/images/logo.png" alt="Can't load logo">
+            </a>
+            <div class="right-navigation">
+                <a title="{{ url_for('show_explore') }}" href="{{ url_for('show_explore') }}">explore</a> |
+                <a title="{{ url_for('show_user', username=logname) }}" href="{{ url_for('show_user', username=logname) }}">{{ logname }}</a>
+            </div>
+        </div>
+        <h1>Followers</h1>
+        
+        {% for f in followers %}
+        <div class="post-info">
+            <a title="/users/{{ f.username }}/" href="/users/{{ f.username }}/">
+                <div class="post-profile">
+                    <div class="post-img">
+                        <img src="{{ url_for('show_image', filename=f.userimg) }}" alt="">
+                    </div>
+                    <h3>{{ f.username }}</h3>
+                </div>
+            </a>
+                {% if f.followed_back == True %}
+                <span>following</span>
+                <form action="/following/?target=/users/{{ f.username }}/" method="post" enctype="multipart/form-data">
+                    <input type="submit" name="unfollow" value="unfollow"/>
+                    <input type="hidden" name="username" value="{{ f.username }}"/>
+                    <input type="hidden" name="operation" value="unfollow"/>
+                </form>
+                {% else %}
+                <span>not following</span>
+                <form action="/following/?target=/users/{{ username }}/" method="post" enctype="multipart/form-data">
+                    <input type="submit" name="follow" value="follow"/>
+                    <input type="hidden" name="username" value="{{ f.username }}"/>
+                    <input type="hidden" name="operation" value="follow"/>
+                </form>
+
+                {% endif %}
+            
+        </div>
+        {% endfor %}
+    </body>
+</html>

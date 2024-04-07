@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>insta485</title>
+        <!-- Link to CSS -->
+        <link rel="stylesheet" href="/static/css/awdeorio_style.css">
+    </head>
+    <body>
+        <div class="heading">
+            <a title="/" href="/" class="logo">
+                <img src="/static/images/logo.png" alt="Can't load logo">
+            </a>
+            <div class="right-navigation">
+                <a title="{{ url_for('show_explore') }}" href="{{ url_for('show_explore') }}">explore</a> | 
+                <a title="{{ url_for('show_user', username=logname) }}" href="{{ url_for('show_user', username=logname) }}">{{ logname }}</a>
+            </div>
+        </div>
+
+        <div class="profile-home">
+            <!-- Profile Details -->
+            <div class="profile-username">
+                <h1>{{ username }}</h1>
+            </div>
+            {% if username == logname %}
+            <form action="/accounts/logout/" method="post" enctype="multipart/form-data">
+                <input type="submit" name="logout" value="Logout"/>
+            </form>
+            {% else %}
+                {% if log_follow_user == 1 %}
+                <form action="/following/?target=/users/{{ username }}/" method="post" enctype="multipart/form-data">
+                    <input type="submit" name="unfollow" value="unfollow"/>
+                    <input type="hidden" name="username" value="{{ username }}"/>
+                    <input type="hidden" name="operation" value="unfollow"/>
+                </form>
+                {% else %}
+                <form action="/following/?target=/users/{{ username }}/" method="post" enctype="multipart/form-data">
+                    <input type="submit" name="follow" value="follow"/>
+                    <input type="hidden" name="username" value="{{ username }}"/>
+                    <input type="hidden" name="operation" value="follow"/>
+                </form>
+
+                {% endif %}
+
+            {% endif %}
+
+            <div class="profile-details">
+                <div class="profile-name">
+                    <h2>{{ fullname }}</h2>
+                </div>
+                <div class="num-posts">
+                    <h3>{{ num_posts }} posts</h3>
+                </div>
+                <div class="num-followers">
+                    <a title="{{ url_for('show_user_followers', username=username) }}" href="{{ url_for('show_user_followers', username=username) }}">
+                    <h3>{{ followers }} followers</h3>
+                    </a>
+                </div>
+                <div class="num-following">
+                    <a title="{{ url_for('show_user_following', username=username) }}" href="{{ url_for('show_user_following', username=username) }}">
+                    <h3>{{ following }} following</h3>
+                    </a>
+                </div>
+            </div>
+            {% if username == logname %}
+            <div class="edit">
+                <a title="edit" href="{{ url_for('show_edit') }}">
+                    <h4>Edit profile</h4>
+                </a>
+            </div>
+
+            {% endif %}
+
+            
+            <!-- Profile Posts -->
+
+            <div class="profile-post-section">
+                {% for post in posts %}
+                <div class="profile-post">
+                    <a title="{{ url_for('show_post', postid=post.postid) }}" href="{{ url_for('show_post', postid=post.postid) }}">
+                    <img src="{{ url_for('show_image', filename=post.filename) }}" alt="">
+                    </a>
+                </div>
+                {% endfor %}
+                {% if logname == username %}
+                    <form action="/posts/?target=/users/{{ username }}" method="post" enctype="multipart/form-data">
+                        <input type="file" name="file" accept="image/*" required/>
+                        <input type="submit" name="create_post" value="upload new post"/>
+                        <input type="hidden" name="operation" value="create"/>
+                    </form>
+                {% endif %}
+            </div>
+        </div>
+    </body>
+</html>

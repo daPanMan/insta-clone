@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>insta485</title>
+        <!-- Link to CSS -->
+        <link rel="stylesheet" href="/static/css/main_style.css">
+    </head>
+    <body>
+        <div class="heading">
+            <a title="{{ url_for('show_index') }}" href="{{ url_for('show_index') }}" class="logo">
+                <img src="/static/images/logo.png" alt="Can't load logo">
+            </a>
+            <div class="right-navigation">
+                <a title="{{ url_for('show_explore') }}" href="{{ url_for('show_explore') }}">explore</a> | 
+                <a title="{{ url_for('show_user', username=logname) }}" href="{{ url_for('show_user', username=logname) }}">{{ logname }}</a>
+            </div>
+        </div>
+        <div class="main-home">
+            <h1>{{ logname }}</h1>
+            <!-- Main Posts -->
+            <!-- DO NOT CHANGE THIS (aside from styling) -->
+            <form action="/accounts/?target=/accounts/create/" method="post" enctype="multipart/form-data">
+                <input type="submit" name="delete" value="confirm delete account"/>
+                <input type="hidden" name="operation" value="delete"/>
+            </form>
+        </div>
+    </body>
+</html>
